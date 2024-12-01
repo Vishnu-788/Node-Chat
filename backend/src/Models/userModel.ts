@@ -117,8 +117,12 @@ userSchema.statics.signup = async function (
 
 //Performs login
 userSchema.statics.login = async function (email: string, password: string) {
-  if (!email || !password) {
-    throw new Error("All fields must be filled");
+  if (!email) {
+    throw new Error("Email is Empty");
+  }
+
+  if (!password) {
+    throw new Error("Password is empty");
   }
 
   // Check if the email exists in db

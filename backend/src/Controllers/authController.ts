@@ -4,7 +4,7 @@ import userModel from "../Models/userModel";
 import jwt from "jsonwebtoken";
 
 const createToken = (_id: string): string => {
-  const token = jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3D" });
+  const token = jwt.sign({ _id }, process.env.SECRET, { expiresIn: "1hr" });
   return token;
 };
 
