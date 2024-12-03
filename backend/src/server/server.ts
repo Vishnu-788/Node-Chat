@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import chatRoutes from "../Routes/chatRoutes";
 import authRoutes from "../Routes/authRoutes";
+import socketHandler from "../socket/socket";
 
 dotenv.config();
 
@@ -18,12 +19,14 @@ app.use(express.json());
 // Middleware that enables communication from different ports
 app.use(
   cors({
-    origin: "http://localhost:5167", // Adjust this to your React app's URL
+    origin: "http://localhost:5174", // Adjust this to your React app's URL
     methods: "GET,POST,PUT,DELETE", // Allowed HTTP methods
     allowedHeaders: "Content-Type, Authorization", // Allowed headers
   })
 );
 
+// Setting up Socket.io
+socketHandler(server);
 // Basic logging middleware
 app.use((req: Request, res: Response, next: NextFunction) => {
   console.log(req.path, req.method);
