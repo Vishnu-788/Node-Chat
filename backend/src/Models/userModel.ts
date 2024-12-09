@@ -11,7 +11,7 @@ interface user extends Document {
 
 interface ProfileMeta {
   fileName: string;
-  path: string;
+  url: string;
   mimeType: string;
 }
 
@@ -21,7 +21,7 @@ interface UserModel extends Model<user> {
     name: string,
     email: string,
     password: string,
-    profileMeta?: Express.Multer.File
+    profileMeta?: ProfileMeta
   ): Promise<user>;
   login(name: string, password: string): Promise<user>;
 }
@@ -46,12 +46,13 @@ const userSchema = new Schema<user>(
       fileName: {
         type: String,
         required: true,
-        default: "Default_image",
+        default: "default",
       },
-      path: {
+      url: {
         type: String,
         required: true,
-        default: "uploads\\some-unique-id-Default_image",
+        default:
+          "http://localhost:4000/uploads/some-unique-id-Default_image.png",
       },
       mimeType: {
         type: String,
@@ -70,7 +71,7 @@ userSchema.statics.signup = async function (
   name: string,
   email: string,
   password: string,
-  profileMeta: Express.Multer.File
+  profileMeta: ProfileMeta
 ) {
   // Validation
   if (!name || !email || !password) {
@@ -91,12 +92,12 @@ userSchema.statics.signup = async function (
     throw new Error("This email or username already exists");
   }
 
-  console.log("Profile Meta " + profileMeta.filename);
+  console.log("Profile Meta " + profileMeta.fileName);
 
   const pictureData: ProfileMeta = {
-    fileName: profileMeta.filename,
-    path: profileMeta.path,
-    mimeType: profileMeta.mimetype,
+    fileName: profileMeta.fileName,
+    url: profileMeta.url,
+    mimeType: profileMeta.mimeType,
   };
   console.log("Profile Data " + pictureData);
 
